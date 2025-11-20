@@ -1,0 +1,23 @@
+{
+  "name": "gregcord",
+  "version": "0.0.1",
+  "description": "Greggin' it",
+  "homepage": "https://github.com/jtadams02/Gregcord#readme",
+  "bugs": {
+    "url": "https://github.com/jtadams02/Gregcord/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jtadams02/Gregcord.git"
+  },
+  "license": "ISC",
+  "author": "JT Adams",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "discord.js": "^14.25.0"
+  }
+}

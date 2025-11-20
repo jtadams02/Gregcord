@@ -1,0 +1,4 @@
+*.env
+# Ignore all files in this folder
+node_modules/
+config.json
