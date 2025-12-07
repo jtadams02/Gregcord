@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "discord.js": "^14.25.0",
-    "rcon-client": "^4.2.5"
+    "rcon-client": "^4.2.5",
+    "read-last-lines": "^1.8.0"
   }
 }

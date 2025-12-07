@@ -3,7 +3,8 @@ const path = require('node:path');
 
 // Required discord.js classes
 const { Client, Collection, Events, GatewayIntentBits, MessageFlags } = require('discord.js');
-const { token } = require('./config.json'); // Gets bot token from config.json
+const { token, logPath } = require('./config.json'); // Gets bot token from config.json
+const { watchLogFile } = require('./helpers/log-watcher.js');
 
 // Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
@@ -13,6 +14,7 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 // It makes some properties non-nullable.
 client.once(Events.ClientReady, (readyClient) => {
 	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
+	watchLogFile(readyClient,logPath);
 });
 client.login(token);
 
@@ -38,6 +40,10 @@ for (const folder of commandFolders) {
         }
     }
 }
+
+// Log queries/watcher
+// latest.log = file name
+// located inside the 
 
 
 // Wait for interactions
