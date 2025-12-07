@@ -1,6 +1,6 @@
 // This file runs with "node deploy-commands.js" and is used sepaarately from the main bot file to deploy commands to Discord for that little popup thang
 const { REST, Routes } = require('discord.js');
-const { clientId, guildId, token } = require('./config.json');
+const { clientId, guildId, guildId2, token } = require('./config.json');
 const fs = require('node:fs');
 const path = require('node:path');
 
@@ -29,12 +29,14 @@ for (const folder of commandFolders) {
 const rest = new REST().setToken(token);
 
 // and deploy your commands!
-(async () => {
+gList = [guildId, guildId2];
+for (const gid of gList) {
+	(async () => {
 	try {
 		console.log(`Started refreshing ${commands.length} application (/) commands.`);
 
 		// The put method is used to fully refresh all commands in the guild with the current set
-		const data = await rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands });
+		const data = await rest.put(Routes.applicationGuildCommands(clientId, gid), { body: commands });
 
 		console.log(`Successfully reloaded ${data.length} application (/) commands.`);
 	} catch (error) {
@@ -42,3 +44,4 @@ const rest = new REST().setToken(token);
 		console.error(error);
 	}
 })();
+}

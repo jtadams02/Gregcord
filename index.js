@@ -1,5 +1,6 @@
 const fs = require('node:fs');
 const path = require('node:path');
+
 // Required discord.js classes
 const { Client, Collection, Events, GatewayIntentBits, MessageFlags } = require('discord.js');
 const { token } = require('./config.json'); // Gets bot token from config.json
@@ -59,4 +60,8 @@ client.on(Events.InteractionCreate, async(interaction) => {
 		}
 	}
 });
+
+// Read console logs and send to discord channel
+
+
 
