@@ -6,6 +6,8 @@ const { Client, Collection, Events, GatewayIntentBits, MessageFlags } = require(
 const { token, logPath } = require('./config.json'); // Gets bot token from config.json
 const { watchLogFile } = require('./helpers/log-watcher.js');
 
+
+
 // Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
