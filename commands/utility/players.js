@@ -15,7 +15,7 @@ module.exports = {
             const [summary, playersString] = response.split(":"); // Grabs everything after colon
 
             if (summary === ("There are 0/20 players online")){
-                const emptyEmbed = createBasicEmbed("Players Online: 0", "No players are currently online.", []);
+                const emptyEmbed = await createBasicEmbed("Players Online: 0", "No players are currently online.", []);
                 await interaction.reply({embeds: [emptyEmbed]});
             } else {
                 // The below code checks if playerString is not null, trims whitepsace, splits by comma (creating the list of playernames), and filters out any empty strings

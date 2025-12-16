@@ -53,7 +53,7 @@ function watchLogFile(discordClient, logFilePath){
                     console.log("[Log Watcher] Log file was renamed (server restart?). Re-initializing watcher.");
                     // The watcher is now invalid. Re-run setup to watch the new file.
                     // A short delay gives the server time to create the new log file.
-                    setTimeout(setupWatcher, 1000);
+                    setTimeout(setupWatcher, 900000); // 15 minutes
                     return;
                 }
 

@@ -5,8 +5,10 @@ const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits, MessageFlags } = require('discord.js');
 const { token, logPath } = require('./config.json'); // Gets bot token from config.json
 const { watchLogFile } = require('./helpers/log-watcher.js');
+const { startIPWatcher } = require('./helpers/ip-helper.js');
 
-
+// Enable certain features of the bot here
+const ENABLE_IP_UPDATER = true;
 
 // Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
@@ -17,6 +19,7 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 client.once(Events.ClientReady, (readyClient) => {
 	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 	watchLogFile(readyClient,logPath);
+	if (ENABLE_IP_UPDATER){startIPWatcher(readyClient);}
 });
 client.login(token);
 

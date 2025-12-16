@@ -5,7 +5,10 @@ function updateStatus(message,discordClient){
 }
 
 function updatePlayerCount(count,discordClient){
-    const status = `⛏️ mining with ${count} player${count !== 1 ? 's' : ''}`;
+    let status = `⛏️ mining with ${count} player${count !== 1 ? 's' : ''}`;
+    if (count <= 0) {
+        status = `⛏️ mining alone 😢`;
+    }
     updateStatus(status,discordClient);
 }
 
