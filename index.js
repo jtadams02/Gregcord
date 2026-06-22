@@ -3,7 +3,7 @@ const path = require('node:path');
 
 // Required discord.js classes
 const { Client, Collection, Events, GatewayIntentBits, MessageFlags } = require('discord.js');
-const { token, logPath } = require('./config.json'); // Gets bot token from config.json
+const { token, logPath, logPath2, logChannel, logChannel2 } = require('./config.json'); // Gets bot token from config.json
 const { watchLogFile } = require('./helpers/log-watcher.js');
 const { startIPWatcher } = require('./helpers/ip-helper.js');
 
@@ -18,7 +18,10 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 // It makes some properties non-nullable.
 client.once(Events.ClientReady, (readyClient) => {
 	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
-	watchLogFile(readyClient,logPath);
+
+	watchLogFile(readyClient,logChannel,logPath);
+	watchLogFile(readyClient,logChannel2,logPath2);
+	
 	if (ENABLE_IP_UPDATER){startIPWatcher(readyClient);}
 });
 client.login(token);
@@ -54,6 +57,7 @@ for (const folder of commandFolders) {
 // Wait for interactions
 client.on(Events.InteractionCreate, async(interaction) => {
 	const command = interaction.client.commands.get(interaction.commandName);
+	const guild = interaction.guild_id; // Probably uncessary but just in case we want to do something with it later
     try {
 		await command.execute(interaction);
 	} catch (error) {

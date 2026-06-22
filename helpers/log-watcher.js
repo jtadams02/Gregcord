@@ -1,6 +1,6 @@
 const fs = require("node:fs"); // File watcher module
 const path = require("node:path");
-const {logChannel} = require("../config.json");
+// const {logChannel} = require("../config.json");
 const readLastLines = require("read-last-lines");
 const {createBasicEmbed} = require("./embed-helper.js")
 const {updatePlayerCount} = require("./status_update.js");
@@ -16,8 +16,8 @@ const deathKeywords = [
     'froze to death', 'withered away', 'walked into a cactus', 'was pricked to death',
     'died'
     ];
-
-function watchLogFile(discordClient, logFilePath){
+// TODO: Add second log file watcher
+function watchLogFile(discordClient, logChannel, logFilePath){
     const channel = discordClient.channels.cache.get(logChannel);
 
     if (!channel) {
@@ -99,7 +99,7 @@ function watchLogFile(discordClient, logFilePath){
     setupWatcher();
 }
 
-// Types: 1 -> Join/Leave, 2 -> Chat Message
+// Types: 1 -> Join/Leave, 2 -> Chat Message, 3 -> Death
 async function sendMessageToChannel(channel, message, playerName, type){
     let embed = null;
     if (type === 1){

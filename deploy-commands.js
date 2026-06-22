@@ -1,6 +1,6 @@
 // This file runs with "node deploy-commands.js" and is used sepaarately from the main bot file to deploy commands to Discord for that little popup thang
 const { REST, Routes } = require('discord.js');
-const { clientId, guildId, guildId2, token } = require('./config.json');
+const { clientId, guildId, guildId2, guildId3, token } = require('./config.json');
 const fs = require('node:fs');
 const path = require('node:path');
 
@@ -31,7 +31,7 @@ for (const folder of commandFolders) {
 const rest = new REST().setToken(token);
 
 // and deploy your commands!
-gList = [guildId, guildId2];
+gList = [guildId, guildId2, guildId3];
 for (const gid of gList) {
 	(async () => {
 	try {
