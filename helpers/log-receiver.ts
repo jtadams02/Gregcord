@@ -1,0 +1,35 @@
+import { createServer } from "node:http";
+
+export function startLogReceiver(processLine: (line: string) => Promise<void>) {
+
+    const server = createServer((request, response) => {
+        if (request.method !== "POST" || request.url !== "/minecraft/logs") {
+            response.writeHead(404);
+            response.end();
+            return;
+        }
+
+        console.log("A log upload reached the endpoint!");
+
+        const chunks: Buffer[] = [];
+
+        request.on("data", (chunk) => {
+            chunks.push(chunk);
+        });
+
+        request.on("end", async () => {
+            const body = Buffer.concat(chunks)
+            const text = new TextDecoder("utf-8").decode(body);
+            console.log("Received log data:", text);
+            await processLine(text);
+            response.writeHead(200);
+            response.end("Log received successfully");
+        });
+        
+    });
+
+    server.listen(3001, "0.0.0.0", () => {
+        console.log("Basic Log Receiver Listening on port 3001");
+    });
+}
+    
