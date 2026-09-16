@@ -6,7 +6,7 @@ const { Client, Collection, Events, GatewayIntentBits, MessageFlags } = require(
 const { token, logPath, logPath2, logChannel, logChannel2 } = require('./config.json'); // Gets bot token from config.json
 const { createLogHandler } = require('./helpers/log-handler.js');
 const { startLogReceiver } = require('./helpers/log-receiver.js');
-const { startIPWatcher } = require('./helpers/ip-helper.js');
+// const { startIPWatcher } = require('./helpers/ip-helper.js');
 
 // Enable certain features of the bot here
 const ENABLE_IP_UPDATER = true;
@@ -21,7 +21,7 @@ client.once(Events.ClientReady, async (readyClient) => {
 	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 	const processLine = await createLogHandler(readyClient, logChannel);
 	startLogReceiver(logPath, processLine);
-	if (ENABLE_IP_UPDATER){startIPWatcher(readyClient);}
+	// if (ENABLE_IP_UPDATER){startIPWatcher(readyClient);}
 });
 client.login(token);
 
