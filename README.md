@@ -35,7 +35,76 @@ output remains. The compiler also does not remove output for deleted source file
 For a clean release, remove only the generated project `dist/` directory before
 building again, after preserving any configuration you have placed there.
 
-## Deploy the built files to the bot LXC
+## Build directly on the bot LXC
+
+Use this workflow when the container has the source repository (including the
+`.ts` files), rather than a copy of prebuilt output. Run these commands in the
+bot container as your application user.
+
+### 1. Prepare the source checkout
+
+For an existing checkout at `~/Gregcord`:
+
+```sh
+cd ~/Gregcord
+node --version
+npm --version
+git status --short
+git pull --ff-only
+```
+
+Review local changes before pulling; resolve any conflicts rather than discarding
+them. Ensure the checkout contains `package.json`, `package-lock.json`,
+`tsconfig.json`, and your source files. Create or retain the container's production
+`config.json` in this directory; Git does not supply it.
+
+### 2. Install build dependencies and compile
+
+Stop any existing bot instance before rebuilding in place or replacing dependencies.
+From `~/Gregcord`, run each command in order and stop if one fails:
+
+```sh
+npm ci --include=dev
+npx tsc -p tsconfig.json --noEmit
+npx tsc -p tsconfig.json --listEmittedFiles
+node --check dist/index.js
+```
+
+`--include=dev` installs the compiler and type definitions even when
+`NODE_ENV=production` is set. Do not use `npm ci --omit=dev` before building:
+TypeScript is a development dependency. Compilation needs more temporary resources
+than running the finished bot. The clean-output guidance above also applies here.
+
+### 3. Use one persistent configuration file
+
+Keep production configuration in `~/Gregcord/config.json`, outside generated output.
+The generated helpers import `dist/config.json`, while the IP updater opens
+`./config.json` relative to the working directory. After each successful build,
+make the generated configuration path point to the root configuration:
+
+```sh
+ln -sfn ../config.json dist/config.json
+```
+
+This replaces a generated configuration copy with a relative symbolic link. If you
+previously edited `dist/config.json` directly, preserve those values in the root
+configuration first. Recreate the link after every build; do not edit or rebuild
+while the bot is running with this layout.
+
+### 4. Run from the repository root
+
+```sh
+node --enable-source-maps dist/index.js
+```
+
+Keep the working directory at `~/Gregcord`, so configuration reads and writes use
+the same persistent file. Dependencies resolve from `~/Gregcord/node_modules`.
+This starts the bot and connects to its configured services; Ctrl+C stops a manual
+run. A process manager should use this same entry point and working directory.
+Rebuild after source changes before restarting. A `.env` file is not automatically
+loaded by these commands; supply any environment variables your code requires.
+
+## Deploy locally built files to the bot LXC
 
 Build locally; the production container only needs Node.js and runtime dependencies.
 For example, use this layout in the container:
