@@ -20,7 +20,7 @@ export function startLogReceiver(processLine: (line: string) => Promise<void>) {
         request.on("end", async () => {
             const body = Buffer.concat(chunks)
             const text = new TextDecoder("utf-8").decode(body);
-            console.log("Received log data:", JSON.stringify(text)W);
+            console.log("Received log data:", JSON.stringify(text));
             await processLine(text);
             response.writeHead(200);
         });
