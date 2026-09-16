@@ -20,7 +20,7 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 client.once(Events.ClientReady, async (readyClient) => {
 	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 	const processLine = await createLogHandler(readyClient, logChannel);
-	startLogReceiver(logPath, processLine);
+	startLogReceiver(processLine);
 	// if (ENABLE_IP_UPDATER){startIPWatcher(readyClient);}
 });
 client.login(token);
