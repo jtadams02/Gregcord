@@ -17,6 +17,7 @@ const deathKeywords = [
 
 function createLogHandler(discordClient: Client, logChannel: string){
     const channel = discordClient.channels.cache.get(logChannel);
+    console.log("Log Handler Created for channel: " + logChannel);
     let playerCount = 0;
     
     // Update player count with current players!
