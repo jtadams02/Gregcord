@@ -34,7 +34,7 @@ function createLogHandler(discordClient: Client, logChannel: string){
 
     return async function readLogLine(line: string) {
         if (!line) { return; } // Skip empty lines
-        if (line.endsWith("joined the game\n") || line.endsWith("left the game\n")){
+        if (line.endsWith("joined the game") || line.endsWith("left the game")){
                 let output = line.split("]: ")[1]; // Splits at "]: " and grabs everything after
                 const playerName = output?.split(" ")[0]; // Grabs playername;
                 playerCount += line.endsWith("joined the game\n") ? 1 : -1;

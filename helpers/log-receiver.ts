@@ -9,8 +9,6 @@ export function startLogReceiver(processLine: (line: string) => Promise<void>) {
             return;
         }
 
-        console.log("A log upload reached the endpoint!");
-
         const chunks: Buffer[] = [];
 
         request.on("data", (chunk) => {
