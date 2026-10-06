@@ -32,11 +32,12 @@ export function startLogReceiver(
                     const channel = await discordClient.channels.fetch(questChannelId) as TextChannel;
                     const embed = new EmbedBuilder()
                         .setColor(0x57F287)
-                        .setTitle(`🏆 ${playerName} completed a quest!`)
-                        .setThumbnail(`https://mc-heads.net/avatar/${encodeURIComponent(playerName)}`)
-                        .setDescription(`**${questName}**`)
+                        .setTitle(`"🏆 ${playerName}" has Completed a Quest!`)
+                        .addFields(
+                            { name: "Quest", value: questName, inline: true },
+                        )
                         .setTimestamp()
-                        .setFooter({ text: "Divine Journey 2 • Quest completion" })
+                        .setFooter({ text: 'I am Gregcord. Beep Boop.' });
 
                     await channel.send({ embeds: [embed] });
                 } else {
