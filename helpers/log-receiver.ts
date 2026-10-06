@@ -20,6 +20,7 @@ export function startLogReceiver(
             try {
                 if (request.url === "/minecraft/logs") {
                     const serverId = request.headers["x-server-id"] as string || "default";
+                    console.log(`Received log line from server ${serverId}: ${body.trimEnd()}`);
                     const processLine = logHandlers[serverId];
                     if (!processLine) {
                         response.writeHead(404).end("Unknown server");
@@ -31,12 +32,11 @@ export function startLogReceiver(
                     const channel = await discordClient.channels.fetch(questChannelId) as TextChannel;
                     const embed = new EmbedBuilder()
                         .setColor(0x57F287)
-                        .setTitle("Quest Completed!")
-                        .addFields(
-                            { name: "Player", value: playerName, inline: true },
-                            { name: "Quest", value: questName, inline: true },
-                        )
-                        .setTimestamp();
+                        .setTitle(`🏆 ${playerName} completed a quest!`)
+                        .setThumbnail(`https://mc-heads.net/avatar/${encodeURIComponent(playerName)}`)
+                        .setDescription(`**${questName}**`)
+                        .setTimestamp()
+                        .setFooter({ text: "Divine Journey 2 • Quest completion" })
 
                     await channel.send({ embeds: [embed] });
                 } else {
