@@ -34,7 +34,7 @@ export function startLogReceiver(
                         .setColor(0x57F287)
                         .setTitle(`🏆 ${playerName} has Completed a Quest!`)
                         .addFields(
-                            { name: "Quest", value: questName, inline: true },
+                            { name: "Quest:", value: questName, inline: true },
                         )
                         .setTimestamp()
                         .setFooter({ text: 'I am Gregcord. Beep Boop.' });
