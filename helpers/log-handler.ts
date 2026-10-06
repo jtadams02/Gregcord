@@ -30,7 +30,9 @@ function createLogHandler(discordClient: Client, logChannel: string){
             const playerList = playersString ? playersString.trim().split(",").filter((p) => p) : [];
             playerCount = playerList.length;
         }
-        updatePlayerCount(playerCount,discordClient);
+        return updatePlayerCount(playerCount,discordClient);
+    }).catch((error: unknown) => {
+        console.error('Failed to get initial player count over RCON:', error);
     });
 
     return async function readLogLine(line: string) {
