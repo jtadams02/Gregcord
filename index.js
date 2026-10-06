@@ -3,7 +3,7 @@ const path = require('node:path');
 
 // Required discord.js classes
 const { Client, Collection, Events, GatewayIntentBits, MessageFlags } = require('discord.js');
-const { token, logPath, logPath2, logChannel, logChannel2 } = require('./config.json'); // Gets bot token from config.json
+const { token, logPath, logPath2, logChannel, logChannel2, djChannel } = require('./config.json'); // Gets bot token from config.json
 const { createLogHandler } = require('./helpers/log-handler.js');
 const { startLogReceiver } = require('./helpers/log-receiver.js');
 // const { startIPWatcher } = require('./helpers/ip-helper.js');
@@ -19,8 +19,11 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 // It makes some properties non-nullable.
 client.once(Events.ClientReady, async (readyClient) => {
 	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
-	const processLine = await createLogHandler(readyClient, logChannel);
-	startLogReceiver(processLine);
+	const logHandlers = {
+        default: createLogHandler(readyClient, logChannel),
+        dj2: createLogHandler(readyClient, djChannel),
+    };
+	startLogReceiver(logHandlers, readyClient, djChannel);
 	// if (ENABLE_IP_UPDATER){startIPWatcher(readyClient);}
 });
 client.login(token);

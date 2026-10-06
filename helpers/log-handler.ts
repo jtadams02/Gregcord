@@ -34,11 +34,12 @@ function createLogHandler(discordClient: Client, logChannel: string){
     });
 
     return async function readLogLine(line: string) {
+        line = line.trimEnd();
         if (!line) { return; } // Skip empty lines
         if (line.endsWith("joined the game") || line.endsWith("left the game")){
                 let output = line.split("]: ")[1]; // Splits at "]: " and grabs everything after
                 const playerName = output?.split(" ")[0]; // Grabs playername;
-                playerCount += line.endsWith("joined the game\n") ? 1 : -1;
+                playerCount += line.endsWith("joined the game") ? 1 : -1;
                 
 
                 if (!output || !playerName) return; // Fuck typescript
@@ -71,7 +72,7 @@ async function sendMessageToChannel(channel: any, message: string, playerName: s
     } else if (type === 3){
         embed = await createBasicEmbed("Player Death", message, [], playerName);
     }
-    channel.send({embeds: [embed]});
+    await channel.send({embeds: [embed]});
 }
 
 module.exports = { createLogHandler };
