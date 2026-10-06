@@ -3,9 +3,10 @@ const path = require('node:path');
 
 // Required discord.js classes
 const { Client, Collection, Events, GatewayIntentBits, MessageFlags } = require('discord.js');
-const { token, logPath, logPath2, logChannel, logChannel2 } = require('./config.json'); // Gets bot token from config.json
-const { watchLogFile } = require('./helpers/log-watcher.js');
-const { startIPWatcher } = require('./helpers/ip-helper.js');
+const { token, logPath, logPath2, logChannel, logChannel2, djChannel } = require('./config.json'); // Gets bot token from config.json
+const { createLogHandler } = require('./helpers/log-handler.js');
+const { startLogReceiver } = require('./helpers/log-receiver.js');
+// const { startIPWatcher } = require('./helpers/ip-helper.js');
 
 // Enable certain features of the bot here
 const ENABLE_IP_UPDATER = true;
@@ -16,13 +17,14 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 // When the client is ready, run this code (only once).
 // The distinction between `client: Client<boolean>` and `readyClient: Client<true>` is important for TypeScript developers.
 // It makes some properties non-nullable.
-client.once(Events.ClientReady, (readyClient) => {
+client.once(Events.ClientReady, async (readyClient) => {
 	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
-
-	watchLogFile(readyClient,logChannel,logPath);
-	watchLogFile(readyClient,logChannel2,logPath2);
-	
-	if (ENABLE_IP_UPDATER){startIPWatcher(readyClient);}
+	const logHandlers = {
+        default: createLogHandler(readyClient, logChannel),
+        dj2: createLogHandler(readyClient, djChannel),
+    };
+	startLogReceiver(logHandlers, readyClient, djChannel);
+	// if (ENABLE_IP_UPDATER){startIPWatcher(readyClient);}
 });
 client.login(token);
 
