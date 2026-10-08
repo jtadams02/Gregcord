@@ -53,7 +53,7 @@ function createLogHandler(discordClient: Client, logChannel: string){
 
                 if (!message || !playerName) return; // Fuck typescript
                 await sendMessageToChannel(channel, message, playerName, 2);
-            } else if (deathKeywords.some(substring => line.includes(substring))){
+            } else if (!line.includes("TooManyGraves") && deathKeywords.some(substring => line.includes(substring))){
                 // Checks if any of the death keywords are in the line!
                 let output = line.split("]: ")[1];
                 const playerName = output?.split(" ")[0];
