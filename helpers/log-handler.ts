@@ -38,6 +38,7 @@ function createLogHandler(discordClient: Client, logChannel: string){
     return async function readLogLine(line: string) {
         line = line.trimEnd();
         if (!line) { return; } // Skip empty lines
+        if (line.includes("TombManyGraves")) { return; } // Skip TombManyGraves logs
         if (line.endsWith("joined the game") || line.endsWith("left the game")){
                 let output = line.split("]: ")[1]; // Splits at "]: " and grabs everything after
                 const playerName = output?.split(" ")[0]; // Grabs playername;
@@ -53,7 +54,7 @@ function createLogHandler(discordClient: Client, logChannel: string){
 
                 if (!message || !playerName) return; // Fuck typescript
                 await sendMessageToChannel(channel, message, playerName, 2);
-            } else if (!line.includes("TombManyGraves") && deathKeywords.some(substring => line.includes(substring))){
+            } else if (deathKeywords.some(substring => line.includes(substring))){
                 // Checks if any of the death keywords are in the line!
                 let output = line.split("]: ")[1];
                 const playerName = output?.split(" ")[0];
