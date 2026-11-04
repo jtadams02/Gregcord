@@ -39,9 +39,9 @@ function startIPWatcher(discordClient){
     }, 900000); // Check every 15 minutes
 }
 
-function getIPCommand(client){
-    const publicIP = getWANaddress();
-    return createBasicEmbed("Current Server IP","The current server IP is: \n**"+publicIP+"**",null,null);
+async function getIPCommand(client){
+    const publicIP = await getWANaddress();
+    return createBasicEmbed("Server IP: **" + publicIP + "**","The current server IP is: \n**"+publicIP+"**",null,null);
 }
 
 module.exports = {startIPWatcher, getIPCommand};

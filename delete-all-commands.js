@@ -6,7 +6,7 @@ const rest = new REST().setToken(token);
 // ...
 
 // for guild-based commands
-guildIds = [guildIdAppleBees, guildIdWashedSchool];
+const guildIds = [guildIdAppleBees, guildIdWashedSchool];
 for (const gid of guildIds) {
 	rest
 	.put(Routes.applicationGuildCommands(clientId, gid), { body: [] })
