@@ -4,7 +4,7 @@ import { EmbedBuilder, type Client, type TextChannel } from "discord.js";
 export function startLogReceiver(
     logHandlers: Record<string, (line: string) => Promise<void>>,
     discordClient: Client,
-    questChannelId: string,
+    questChannelIds: Record<string, string>,
 ) {
     const server = createServer((request, response) => {
         if (request.method !== "POST") {
@@ -29,7 +29,11 @@ export function startLogReceiver(
                     await processLine(body.trimEnd());
                 } else if (request.url === "/notify") {
                     const { playerName, questName } = JSON.parse(body);
-                    const channel = await discordClient.channels.fetch(questChannelId) as TextChannel;
+
+                    const serverId = request.headers["x-server-id"] as string || "default";
+                    const questChannelId = questChannelIds[serverId];
+                    
+                    const channel = await discordClient.channels.fetch(questChannelId!) as TextChannel;
                     const embed = new EmbedBuilder()
                         .setColor(0x57F287)
                         .setTitle(`🏆 ${playerName} has Completed a Quest!`)

@@ -40,7 +40,7 @@ function startIPWatcher(discordClient){
 }
 
 function getIPCommand(client){
-    const publicIP = currentIP;
+    const publicIP = getWANaddress();
     return createBasicEmbed("Current Server IP","The current server IP is: \n**"+publicIP+"**",null,null);
 }
 

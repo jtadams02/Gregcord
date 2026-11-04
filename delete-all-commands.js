@@ -1,12 +1,12 @@
 const { REST, Routes } = require('discord.js');
-const { clientId, guildId, guildId2, token } = require('./config.json');
+const { clientId, guildIdAppleBees, guildIdWashedSchool, token } = require('./config.json');
 
 const rest = new REST().setToken(token);
 
 // ...
 
 // for guild-based commands
-guildIds = [guildId, guildId2];
+guildIds = [guildIdAppleBees, guildIdWashedSchool];
 for (const gid of guildIds) {
 	rest
 	.put(Routes.applicationGuildCommands(clientId, gid), { body: [] })
