@@ -41,7 +41,7 @@ function startIPWatcher(discordClient){
 
 async function getIPCommand(client){
     const publicIP = await getWANaddress();
-    return createBasicEmbed("Server IP: **" + publicIP + "**","The current server IP is: \n**"+publicIP+"**",null,null);
+    return createBasicEmbed("Server IP: **" + publicIP + "**","The current server IP is: \n**"+publicIP+"**\n\nThe port for the GTNH server is: \n**25565**",null,null);
 }
 
 module.exports = {startIPWatcher, getIPCommand};
